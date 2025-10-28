@@ -1,9 +1,686 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="it" data-theme="auto">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Milena Blanco — Sito Ufficiale</title>
+  <meta name="description" content="Milena Blanco — foto, video, musica, passioni e progetti." />
+  <meta name="color-scheme" content="light dark" />
+  <!-- Open Graph (aggiorna og:image e og:url quando pubblichi) -->
+  <meta property="og:title" content="Milena Blanco" />
+  <meta property="og:description" content="Foto, video, musica, passioni e progetti." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://tuo-username.github.io/milenablanco" />
+  <meta property="og:image" content="images/og-cover.jpg" />
+  <meta name="theme-color" content="#ff4d6d" />
+
+  <!-- Font (opzionale; puoi rimuovere e usare solo i font di sistema) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ========== Variabili e reset ========== */
+    :root {
+      --container: 1120px;
+      --radius: 14px;
+      --gap: 20px;
+
+      --accent: #ff4d6d;             /* Cambia qui il colore principale */
+      --accent-contrast: #ffffff;
+
+      /* Tema chiaro (default) */
+      --bg: #ffffff;
+      --surface: #f6f7f9;
+      --elev: #ffffff;
+      --text: #12131a;
+      --muted: #616575;
+      --border: #e6e8ee;
+      --shadow: 0 6px 24px rgba(16, 24, 40, 0.08);
+      --grad: radial-gradient(1200px 600px at 85% -10%, rgba(255,77,109,.18), transparent 60%),
+              radial-gradient(900px 500px at -10% 10%, rgba(0,150,255,.12), transparent 55%);
+    }
+    [data-theme="dark"] {
+      --bg: #0e1014;
+      --surface: #12141b;
+      --elev: #171923;
+      --text: #e8eaf2;
+      --muted: #a0a4b8;
+      --border: #262a36;
+      --shadow: 0 8px 32px rgba(0,0,0,0.45);
+      --grad: radial-gradient(1200px 600px at 85% -10%, rgba(255,77,109,.18), transparent 60%),
+              radial-gradient(900px 500px at -10% 10%, rgba(0,150,255,.12), transparent 55%);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    img, video { max-width: 100%; height: auto; display: block; }
+    a { color: inherit; text-decoration: none; }
+    a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 8px; }
+    ::selection { background: var(--accent); color: var(--accent-contrast); }
+
+    /* ========== Layout base ========== */
+    .container { width: min(100% - 32px, var(--container)); margin-inline: auto; }
+    .section { padding: 80px 0; }
+    .section-title {
+      font-size: clamp(1.6rem, 1.2rem + 1.2vw, 2.2rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin: 0 0 10px;
+    }
+    .section-subtitle {
+      color: var(--muted);
+      margin: 0 0 28px;
+    }
+
+    /* ========== Header / Nav ========== */
+    .skip-link {
+      position: absolute; left: -9999px; top: auto;
+    }
+    .skip-link:focus {
+      left: 12px; top: 12px; background: var(--elev); border: 1px solid var(--border);
+      padding: 8px 12px; z-index: 9999; border-radius: 8px;
+    }
+
+    .site-header {
+      position: sticky; top: 0; z-index: 100;
+      background: color-mix(in oklab, var(--bg) 85%, transparent);
+      backdrop-filter: saturate(160%) blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 0;
+    }
+    .logo {
+      font-weight: 800; letter-spacing: -0.02em;
+      font-size: 1.15rem;
+      display: inline-flex; align-items: center; gap: 10px;
+    }
+    .logo-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); display: inline-block; }
+
+    .nav-menu {
+      display: flex; gap: 16px; align-items: center;
+    }
+    .nav-menu a {
+      color: var(--muted);
+      padding: 8px 12px; border-radius: 10px;
+    }
+    .nav-menu a:hover { color: var(--text); background: var(--surface); }
+    .nav-actions { display: flex; gap: 10px; align-items: center; }
+
+    .btn, button, .chip {
+      border: 0; border-radius: 12px; padding: 10px 14px; cursor: pointer; font-weight: 600;
+      background: var(--elev); color: var(--text); border: 1px solid var(--border);
+      transition: transform .06s ease, background .2s ease, color .2s ease, border .2s ease;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn.primary {
+      background: var(--accent); color: var(--accent-contrast);
+      border-color: color-mix(in oklab, var(--accent), black 12%);
+    }
+    .icon-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 40px; height: 40px; border-radius: 10px;
+      background: var(--elev); border: 1px solid var(--border);
+    }
+
+    .nav-toggle { display: none; }
+
+    /* ========== Hero ========== */
+    .hero {
+      position: relative;
+      background: var(--grad);
+      padding: 80px 0 40px;
+    }
+    .hero-wrap {
+      display: grid; grid-template-columns: 1.4fr .9fr; gap: 28px; align-items: center;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 1.4rem + 2.6vw, 3.2rem);
+      letter-spacing: -0.03em; line-height: 1.12; margin: 0 0 14px;
+    }
+    .hero p { margin: 0 0 18px; color: var(--muted); font-size: clamp(1rem, .92rem + .3vw, 1.1rem); }
+    .hero-cta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--elev); padding: 8px 12px; border-radius: 999px; border: 1px solid var(--border);
+      width: fit-content; margin-bottom: 16px; color: var(--muted);
+    }
+    .avatar {
+      width: 100%; aspect-ratio: 1/1; border-radius: 20px; overflow: hidden;
+      background: var(--surface); border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* ========== Card e griglie ========== */
+    .grid {
+      display: grid; gap: var(--gap);
+      grid-template-columns: repeat(12, 1fr);
+    }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid-auto { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+
+    .card {
+      background: var(--elev); border: 1px solid var(--border);
+      border-radius: var(--radius); box-shadow: var(--shadow);
+      overflow: clip;
+    }
+    .card-body { padding: 14px; }
+    .card-title { margin: 8px 0 6px; font-weight: 700; }
+    .card-meta { color: var(--muted); font-size: .95rem; margin: 0; }
+    .media { aspect-ratio: 16/10; background: var(--surface); }
+
+    /* ========== Sezioni specifiche ========== */
+    .gallery img { width: 100%; height: 100%; object-fit: cover; }
+    .gallery figure { margin: 0; }
+    .gallery figcaption { padding: 10px 12px; color: var(--muted); font-size: .95rem; }
+
+    .passions {
+      display: grid; gap: var(--gap);
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+    .passion {
+      display: flex; gap: 12px; align-items: center;
+      padding: 14px; border: 1px solid var(--border);
+      background: var(--elev); border-radius: 14px;
+    }
+    .passion-emoji { font-size: 1.6rem; }
+
+    .projects { display: grid; gap: var(--gap); grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+
+    /* ========== Contatti / Footer ========== */
+    .contact {
+      display: grid; gap: var(--gap);
+      grid-template-columns: 1.2fr .8fr;
+    }
+    .socials { display: flex; gap: 10px; flex-wrap: wrap; }
+    .socials a { display: inline-flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--border); background: var(--elev); }
+    .socials svg { width: 18px; height: 18px; }
+
+    .footer {
+      border-top: 1px solid var(--border);
+      color: var(--muted); padding: 18px 0; text-align: center; font-size: .95rem;
+      background: color-mix(in oklab, var(--bg) 92%, transparent);
+    }
+
+    /* ========== Back-to-top ========== */
+    .to-top {
+      position: fixed; right: 16px; bottom: 16px; z-index: 99; opacity: 0; pointer-events: none;
+      transition: opacity .2s ease, transform .2s ease;
+    }
+    .to-top.show { opacity: 1; pointer-events: auto; transform: translateY(-4px); }
+
+    /* ========== Responsività ========== */
+    @media (max-width: 960px) {
+      .hero-wrap { grid-template-columns: 1fr; }
+      .contact { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 760px) {
+      .nav-toggle { display: inline-flex; }
+      .nav-toggle {
+        width: 42px; height: 42px; align-items: center; justify-content: center; border-radius: 10px;
+        background: var(--elev); border: 1px solid var(--border);
+      }
+      .nav-menu {
+        position: fixed; inset: 60px 12px auto 12px; z-index: 101;
+        background: var(--elev); border: 1px solid var(--border); border-radius: 14px;
+        box-shadow: var(--shadow); padding: 10px; display: none; flex-direction: column; gap: 6px;
+      }
+      .nav-menu.open { display: flex; }
+      .nav-actions { width: 100%; display: flex; justify-content: space-between; }
+    }
+  </style>
+</head>
 <body>
+  <a href="#main" class="skip-link">Salta al contenuto</a>
 
-<h1>ciao sono milenaaaaa</h1>
-<p>My first paragraph.</p>
+  <!-- Header / Nav -->
+  <header class="site-header">
+    <div class="container nav" role="navigation" aria-label="Navigazione principale">
+      <a class="logo" href="#home" aria-label="Milena Blanco - Home">
+        <span class="logo-dot" aria-hidden="true"></span> Milena Blanco
+      </a>
 
+      <nav class="nav-menu" id="nav-menu">
+        <a href="#about">Chi sono</a>
+        <a href="#gallery">Foto</a>
+        <a href="#videos">Video</a>
+        <a href="#music">Canzoni</a>
+        <a href="#passions">Passioni</a>
+        <a href="#projects">Progetti</a>
+        <a href="#contact">Contatti</a>
+        <div class="nav-actions">
+          <button class="icon-btn" id="theme-toggle" aria-label="Cambia tema" title="Cambia tema">
+            <!-- icona sole/luna -->
+            <svg id="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.8 1.42-1.42zm10.45 14.32l1.79 1.8 1.41-1.41-1.8-1.79-1.4 1.4zM12 4V1h-1v3h1zm0 19v-3h-1v3h1zM4 12H1v-1h3v1zm19 0h-3v-1h3v1zM6.76 18.36l-1.41 1.41-1.79-1.8 1.41-1.41 1.79 1.8zm12.02-12.02l1.41-1.41 1.8 1.79-1.41 1.41-1.8-1.79zM12 7a5 5 0 100 10 5 5 0 000-10z"/></svg>
+          </button>
+        </div>
+      </nav>
+
+      <button class="nav-toggle" id="nav-toggle" aria-controls="nav-menu" aria-expanded="false" aria-label="Apri menu">
+        <!-- Hamburger -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero" id="home" aria-label="Presentazione">
+      <div class="container hero-wrap">
+        <div>
+          <div class="badge">Benvenutə nel mio mondo creativo ✨</div>
+          <h1>Ciao, sono <span style="color:var(--accent)">Milena Blanco</span>.</h1>
+          <p>Creo e condivido momenti attraverso foto, video e musica. Qui trovi i miei lavori, le mie passioni e tutto ciò che mi ispira.</p>
+          <div class="hero-cta">
+            <a class="btn primary" href="#gallery">Guarda le foto</a>
+            <a class="btn" href="#contact">Contattami</a>
+          </div>
+        </div>
+        <div class="avatar" aria-hidden="true">
+          <!-- TODO: sostituisci con la tua immagine di copertina -->
+          <img src="images/cover.jpg" alt="Ritratto o immagine di copertina" loading="lazy" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Chi sono -->
+    <section class="section" id="about" aria-labelledby="about-title">
+      <div class="container">
+        <h2 class="section-title" id="about-title">Chi sono</h2>
+        <p class="section-subtitle">Una breve bio per conoscermi meglio.</p>
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="card-body">
+              <p>
+                <!-- TODO: scrivi la tua bio -->
+                Sono una creativa che ama raccontare storie con immagini e suoni. Tra shooting, montaggio video e sessioni musicali, cerco sempre nuove ispirazioni da condividere.
+              </p>
+              <ul>
+                <li><strong>Base:</strong> Torino, IT</li>
+                <li><strong>Lingue:</strong> Italiano, Inglese, Spagnolo</li>
+                <li><strong>Collaborazioni:</strong> aperta a progetti foto/video/musica</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <h3 class="card-title">In evidenza</h3>
+              <p class="card-meta">Qualche numero o highlight</p>
+              <ul>
+                <li>+50 shooting realizzati</li>
+                <li>Videoclip ufficiali pubblicati su YouTube</li>
+                <li>Brani originali e cover disponibili</li>
+              </ul>
+              <a class="btn" href="#projects">Vai ai progetti</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Foto / Gallery -->
+    <section class="section" id="gallery" aria-labelledby="gallery-title">
+      <div class="container">
+        <h2 class="section-title" id="gallery-title">Foto</h2>
+        <p class="section-subtitle">Una selezione di scatti che amo di più.</p>
+
+        <div class="gallery grid grid-auto">
+          <!-- Esempi: sostituisci src e descrizioni -->
+          <figure class="card">
+            <div class="media">
+              <img src="images/photo-1.jpg" alt="Titolo/contesto della foto 1" loading="lazy">
+            </div>
+            <figcaption>Foto 1 — descrizione breve</figcaption>
+          </figure>
+
+          <figure class="card">
+            <div class="media">
+              <img src="images/photo-2.jpg" alt="Titolo/contesto della foto 2" loading="lazy">
+            </div>
+            <figcaption>Foto 2 — descrizione breve</figcaption>
+          </figure>
+
+          <figure class="card">
+            <div class="media">
+              <img src="images/photo-3.jpg" alt="Titolo/contesto della foto 3" loading="lazy">
+            </div>
+            <figcaption>Foto 3 — descrizione breve</figcaption>
+          </figure>
+
+          <figure class="card">
+            <div class="media">
+              <img src="images/photo-4.jpg" alt="Titolo/contesto della foto 4" loading="lazy">
+            </div>
+            <figcaption>Foto 4 — descrizione breve</figcaption>
+          </figure>
+
+          <figure class="card">
+            <div class="media">
+              <img src="images/photo-5.jpg" alt="Titolo/contesto della foto 5" loading="lazy">
+            </div>
+            <figcaption>Foto 5 — descrizione breve</figcaption>
+          </figure>
+
+          <figure class="card">
+            <div class="media">
+              <img src="images/photo-6.jpg" alt="Titolo/contesto della foto 6" loading="lazy">
+            </div>
+            <figcaption>Foto 6 — descrizione breve</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- Video -->
+    <section class="section" id="videos" aria-labelledby="videos-title">
+      <div class="container">
+        <h2 class="section-title" id="videos-title">Video</h2>
+        <p class="section-subtitle">Trailer, vlog, backstage o videoclip musicali.</p>
+
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="media">
+              <!-- TODO: sostituisci con il tuo ID YouTube -->
+              <iframe width="560" height="315" src="https://www.youtube.com/embed/VIDEO_ID_1"
+                      title="Video YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowfullscreen loading="lazy"></iframe>
+            </div>
+            <div class="card-body">
+              <h3 class="card-title">Titolo Video 1</h3>
+              <p class="card-meta">Breve descrizione del video</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="media">
+              <iframe width="560" height="315" src="https://www.youtube.com/embed/VIDEO_ID_2"
+                      title="Video YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowfullscreen loading="lazy"></iframe>
+            </div>
+            <div class="card-body">
+              <h3 class="card-title">Titolo Video 2</h3>
+              <p class="card-meta">Breve descrizione del video</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Canzoni / Musica -->
+    <section class="section" id="music" aria-labelledby="music-title">
+      <div class="container">
+        <h2 class="section-title" id="music-title">Canzoni</h2>
+        <p class="section-subtitle">Brani originali, cover e playlist.</p>
+
+        <div class="grid grid-auto">
+          <!-- Traccia locale -->
+          <div class="card">
+            <div class="card-body">
+              <h3 class="card-title">Titolo Brano 1</h3>
+              <p class="card-meta">Anno — Genere</p>
+              <!-- TODO: sostituisci src con il tuo file -->
+              <audio controls preload="none" style="width:100%">
+                <source src="media/track-1.mp3" type="audio/mpeg" />
+                Il tuo browser non supporta l'elemento audio.
+              </audio>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <h3 class="card-title">Titolo Brano 2</h3>
+              <p class="card-meta">Anno — Genere</p>
+              <audio controls preload="none" style="width:100%">
+                <source src="media/track-2.mp3" type="audio/mpeg" />
+              </audio>
+            </div>
+          </div>
+
+          <!-- Embed Spotify (opzionale) -->
+          <div class="card">
+            <div class="media" style="aspect-ratio: 16/9;">
+              <!-- TODO: sostituisci con il link embed Spotify -->
+              <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/SPOTIFY_TRACK_ID?utm_source=generator"
+                      width="100%" height="100%" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                      loading="lazy"></iframe>
+            </div>
+            <div class="card-body">
+              <h3 class="card-title">Ascolta su Spotify</h3>
+              <p class="card-meta">Brano/playlist in streaming</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Passioni -->
+    <section class="section" id="passions" aria-labelledby="passions-title">
+      <div class="container">
+        <h2 class="section-title" id="passions-title">Passioni</h2>
+        <p class="section-subtitle">Cose che mi fanno brillare gli occhi.</p>
+
+        <div class="passions">
+          <!-- TODO: personalizza -->
+          <div class="passion">
+            <div class="passion-emoji">📷</div>
+            <div>
+              <strong>Fotografia</strong><br>
+              <span class="card-meta">Ritratti e street</span>
+            </div>
+          </div>
+          <div class="passion">
+            <div class="passion-emoji">🎬</div>
+            <div>
+              <strong>Video making</strong><br>
+              <span class="card-meta">Storytelling e montaggio</span>
+            </div>
+          </div>
+          <div class="passion">
+            <div class="passion-emoji">🎵</div>
+            <div>
+              <strong>Musica</strong><br>
+              <span class="card-meta">Cover e brani originali</span>
+            </div>
+          </div>
+          <div class="passion">
+            <div class="passion-emoji">✈️</div>
+            <div>
+              <strong>Viaggi</strong><br>
+              <span class="card-meta">Nuovi luoghi, nuove storie</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Progetti -->
+    <section class="section" id="projects" aria-labelledby="projects-title">
+      <div class="container">
+        <h2 class="section-title" id="projects-title">Progetti</h2>
+        <p class="section-subtitle">Selezione di lavori e collaborazioni.</p>
+
+        <div class="projects">
+          <article class="card">
+            <div class="media">
+              <img src="images/project-1.jpg" alt="Anteprima progetto 1" loading="lazy">
+            </div>
+            <div class="card-body">
+              <h3 class="card-title">Progetto 1</h3>
+              <p class="card-meta">Descrizione breve del progetto</p>
+              <a class="btn" href="#" target="_blank" rel="noopener">Scopri di più</a>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="media">
+              <img src="images/project-2.jpg" alt="Anteprima progetto 2" loading="lazy">
+            </div>
+            <div class="card-body">
+              <h3 class="card-title">Progetto 2</h3>
+              <p class="card-meta">Descrizione breve del progetto</p>
+              <a class="btn" href="#" target="_blank" rel="noopener">Scopri di più</a>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="media">
+              <img src="images/project-3.jpg" alt="Anteprima progetto 3" loading="lazy">
+            </div>
+            <div class="card-body">
+              <h3 class="card-title">Progetto 3</h3>
+              <p class="card-meta">Descrizione breve del progetto</p>
+              <a class="btn" href="#" target="_blank" rel="noopener">Scopri di più</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contatti -->
+    <section class="section" id="contact" aria-labelledby="contact-title">
+      <div class="container">
+        <h2 class="section-title" id="contact-title">Contatti</h2>
+        <p class="section-subtitle">Scrivimi per collaborazioni, booking o info.</p>
+
+        <div class="contact">
+          <div class="card">
+            <div class="card-body">
+              <!-- Mailto (GitHub Pages non ha backend) -->
+              <p><strong>Email:</strong> <a href="mailto:ciao@milenablanco.it">ciao@milenablanco.it</a></p>
+              <p><strong>Disponibilità:</strong> remoto / in presenza</p>
+              <p><strong>Note:</strong> rispondo in 24-48h</p>
+              <a class="btn primary" href="mailto:ciao@milenablanco.it?subject=Ciao%20Milena!">Scrivimi</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <h3 class="card-title">Seguimi</h3>
+              <div class="socials">
+                <!-- Sostituisci gli href con i tuoi profili -->
+                <a href="https://instagram.com/username" target="_blank" rel="noopener" aria-label="Instagram">
+                  <!-- icona instagram -->
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 2C4.243 2 2 4.243 2 7v10c0 2.757 2.243 5 5 5h10c2.757 0 5-2.243 5-5V7c0-2.757-2.243-5-5-5H7zm10 2a3 3 0 013 3v10a3 3 0 01-3 3H7a3 3 0 01-3-3V7a3 3 0 013-3h10zm-5 3a5 5 0 100 10 5 5 0 000-10zm0 2a3 3 0 110 6 3 3 0 010-6zm5.5-2a1 1 0 100 2 1 1 0 000-2z"/></svg>
+                  Instagram
+                </a>
+                <a href="https://youtube.com/@username" target="_blank" rel="noopener" aria-label="YouTube">
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.007 3.007 0 00-2.117-2.129C19.483 3.5 12 3.5 12 3.5s-7.484 0-9.381.557A3.007 3.007 0 00.502 6.186 31.23 31.23 0 000 12a31.23 31.23 0 00.502 5.814 3.007 3.007 0 002.117 2.129C4.516 20.5 12 20.5 12 20.5s7.483 0 9.381-.557a3.007 3.007 0 002.117-2.129A31.23 31.23 0 0024 12a31.23 31.23 0 00-.502-5.814zM9.75 15.02V8.98L15.5 12l-5.75 3.02z"/></svg>
+                  YouTube
+                </a>
+                <a href="https://tiktok.com/@username" target="_blank" rel="noopener" aria-label="TikTok">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 8.5a7.6 7.6 0 01-5-1.8V17a5.5 5.5 0 11-5.5-5.5c.2 0 .4 0 .6.03V14a2.5 2.5 0 102-2.45V2h2.6a5.8 5.8 0 005 5.7z"/></svg>
+                  TikTok
+                </a>
+                <a href="https://open.spotify.com/user/username" target="_blank" rel="noopener" aria-label="Spotify">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.998a10 10 0 100 20.004 10 10 0 000-20.004zm4.585 14.61a.75.75 0 01-1.03.24 10.7 10.7 0 00-6.11-1.12c-1.05.08-2.09.32-3.06.73a.75.75 0 11-.58-1.38 12.2 12.2 0 013.5-.84c2.44-.17 4.92.38 7.01 1.6.36.2.49.65.24.99zm1.18-2.93a.9.9 0 01-1.23.3c-2.17-1.3-5.29-1.88-8.3-1.42-1.08.16-2.14.46-3.14.88a.9.9 0 11-.69-1.67 14.9 14.9 0 013.52-.95c3.4-.51 6.94.14 9.46 1.65.43.26.57.82.29 1.21zm.2-3.09a1.05 1.05 0 01-1.43.35c-2.63-1.54-6.92-2.1-10.35-1.57a17 17 0 00-3.68.99 1.05 1.05 0 01-.78-1.95 19 19 0 013.98-1.07c3.83-.58 8.53-.02 11.57 1.76.5.3.68.96.36 1.49z"/></svg>
+                  Spotify
+                </a>
+                <a href="https://github.com/username" target="_blank" rel="noopener" aria-label="GitHub">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a12 12 0 00-3.79 23.4c.6.1.82-.26.82-.58v-2.03c-3.35.73-4.06-1.6-4.06-1.6-.55-1.4-1.35-1.77-1.35-1.77-1.1-.76.08-.74.08-.74 1.22.09 1.86 1.26 1.86 1.26 1.08 1.85 2.83 1.31 3.52 1 .11-.8.42-1.31.76-1.61-2.67-.3-5.47-1.34-5.47-5.96 0-1.32.47-2.4 1.25-3.25-.12-.3-.54-1.53.12-3.19 0 0 1.01-.32 3.3 1.24a11.43 11.43 0 016 0C16.26 6.4 17.27 6.72 17.27 6.72c.66 1.66.24 2.88.12 3.19.78.85 1.25 1.93 1.25 3.25 0 4.63-2.8 5.65-5.47 5.95.43.37.81 1.1.81 2.22v3.3c0 .32.22.69.83.57A12 12 0 0012 .5z"/></svg>
+                  GitHub
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      © <span id="year"></span> Milena Blanco — Tutti i diritti riservati
+    </div>
+  </footer>
+
+  <!-- Back to top -->
+  <button class="icon-btn to-top" id="toTop" aria-label="Torna su" title="Torna su">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l-7 7h4v7h6V9h4z"/><path d="M5 20h14v2H5z"/></svg>
+  </button>
+
+  <script>
+    // Utility: tema chiaro/scuro con preferenza salvata
+    (function themeManager() {
+      const root = document.documentElement;
+      const toggleBtn = document.getElementById('theme-toggle');
+      const STORAGE_KEY = 'theme-preference';
+
+      function currentPref() {
+        return localStorage.getItem(STORAGE_KEY) || 'auto';
+      }
+      function applyTheme(pref) {
+        if (pref === 'auto') {
+          const media = window.matchMedia('(prefers-color-scheme: dark)');
+          root.setAttribute('data-theme', media.matches ? 'dark' : 'light');
+        } else {
+          root.setAttribute('data-theme', pref);
+        }
+      }
+      function cycleTheme() {
+        const pref = currentPref();
+        const next = pref === 'auto' ? 'dark' : pref === 'dark' ? 'light' : 'auto';
+        localStorage.setItem(STORAGE_KEY, next);
+        applyTheme(next);
+        toggleBtn.title = 'Tema: ' + next;
+      }
+
+      // Init
+      const saved = currentPref();
+      applyTheme(saved);
+      if (toggleBtn) toggleBtn.addEventListener('click', cycleTheme);
+
+      // Reagisci ai cambi di sistema se in auto
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+        if (currentPref() === 'auto') applyTheme('auto');
+      });
+    })();
+
+    // Menu mobile
+    (function mobileMenu() {
+      const btn = document.getElementById('nav-toggle');
+      const menu = document.getElementById('nav-menu');
+      if (!btn || !menu) return;
+      btn.addEventListener('click', () => {
+        const open = menu.classList.toggle('open');
+        btn.setAttribute('aria-expanded', String(open));
+      });
+      // Chiudi al click sui link
+      menu.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          menu.classList.remove('open');
+          btn.setAttribute('aria-expanded', 'false');
+        });
+      });
+    })();
+
+    // Back-to-top + anno footer
+    (function helpers() {
+      const toTop = document.getElementById('toTop');
+      const year = document.getElementById('year');
+      if (year) year.textContent = new Date().getFullYear();
+      window.addEventListener('scroll', () => {
+        if (!toTop) return;
+        if (window.scrollY > 400) toTop.classList.add('show');
+        else toTop.classList.remove('show');
+      });
+      if (toTop) toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    })();
+  </script>
 </body>
 </html>
